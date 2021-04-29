@@ -6,7 +6,7 @@ package philosophe;
 public class DiningPhilosophers {
 
     // Le nombre de philosophe.
-    public static final int NUM_PHILS = 2;
+    public static final int NUM_PHILS = 3;
 
     public static void main(final String[] args) {
 
@@ -20,7 +20,8 @@ public class DiningPhilosophers {
         final Philosopher[] philosophers = new Philosopher[NUM_PHILS];
         for (int i = 0; i != NUM_PHILS; i++) {
             philosophers[i] = new Philosopher(i, forks[i], forks[(i + 1) % NUM_PHILS]);
-            philosophers[i].start();
+            // philosophers[i].fill();
+	    philosophers[i].start();
         }
     }
 }

@@ -25,7 +25,7 @@ public final class Fork {
         synchronized (lock) {
             try {
                 if (!free) {
-                    wait();
+                    lock.wait();
                 }
                 free = false;
             } catch (final InterruptedException e) {
@@ -40,7 +40,7 @@ public final class Fork {
     public void release() {
         synchronized (lock) {
             free = true;
-            notifyAll();
+            lock.notifyAll();
         }
     }
 

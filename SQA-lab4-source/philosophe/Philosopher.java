@@ -43,8 +43,14 @@ public class Philosopher extends Thread {
                 sleep(num * 100);
 
                 // Saisie des fourchettes
-                left.grab();
-                right.grab();
+                if (num % 2 == 0) {
+		    left.grab();
+                    right.grab();
+		} else {
+		    right.grab();
+		    left.grab();
+		}
+
 
                 // Dégustation
                 if (amountOfFood <= 0) {
@@ -52,7 +58,7 @@ public class Philosopher extends Thread {
                     System.out.println(cpt);
                     fill();
                 }
-                amountOfFood = amountOfFood - 2;
+		amountOfFood = amountOfFood - 1;
 
                 // Reclacgement des fourchettes
                 left.release();
