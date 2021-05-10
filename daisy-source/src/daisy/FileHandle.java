@@ -13,7 +13,15 @@ package daisy;
 
 //@ thread_local
 public class FileHandle {
-    public long inodenum;
+    private long inodenum;
+
+    public synchronized void setInodenum(long inodenum) {
+        this.inodenum = inodenum;
+    }
+
+    public synchronized long getInodenum() {
+        return this.inodenum;
+    }
 
     public static boolean equal(FileHandle fd1, FileHandle fd2) {
 	return fd1.inodenum == fd2.inodenum;

@@ -87,11 +87,11 @@ public class DaisyDir {
 	// Currently, we do not check that dir is indeed a directory.  We assume 
 	// that a client of the file system is well-behaved and does not attempt 
 	// to create a file in another file.
-        DaisyLock.lock_file(dir.inodenum);
+        DaisyLock.lock_file(dir.getInodenum());
         d.file = dir;
-	res = Daisy.get_attr(dir.inodenum, a);
+	res = Daisy.get_attr(dir.getInodenum(), a);
 	if (res != Daisy.DAISY_ERR_OK) {
-	    DaisyLock.unlock_file(d.file.inodenum); 
+	    DaisyLock.unlock_file(d.file.getInodenum()); 
 	    return res;
 	}
         d.size = a.size / DirectoryEntry.ENTRYSIZE;
@@ -99,10 +99,10 @@ public class DaisyDir {
         for (int i = 0; i < d.size; i++) {
             d.entries[i] = new DirectoryEntry();
             d.entries[i].inodenum = 
-		DaisyDir.readLong(dir.inodenum, i * DirectoryEntry.ENTRYSIZE);
+		DaisyDir.readLong(dir.getInodenum(), i * DirectoryEntry.ENTRYSIZE);
 	    // We know that we only need a byte to store the size of filename
             int namesize = 
-		(int) DaisyDir.readLong(dir.inodenum, i * DirectoryEntry.ENTRYSIZE + 8);
+		(int) DaisyDir.readLong(dir.getInodenum(), i * DirectoryEntry.ENTRYSIZE + 8);
 	    byte[] b = new byte[namesize];
 	    DaisyDir.read(dir, i * DirectoryEntry.ENTRYSIZE + 16, namesize, b); 
             d.entries[i].filename = b;
@@ -120,10 +120,10 @@ public class DaisyDir {
     */
     static int closeDirectory(Directory d) {
         for (int i = 0; i < d.size; i++) {
-            DaisyDir.writeLong(d.file.inodenum, 
+            DaisyDir.writeLong(d.file.getInodenum(), 
 				i * DirectoryEntry.ENTRYSIZE, 
 				d.entries[i].inodenum);
-            DaisyDir.writeLong(d.file.inodenum, 
+            DaisyDir.writeLong(d.file.getInodenum(), 
 			       i * DirectoryEntry.ENTRYSIZE + 8, 
 			       (long) d.entries[i].filename.length);
 	    byte[] b = new byte[DirectoryEntry.MAXNAMESIZE];
@@ -133,7 +133,7 @@ public class DaisyDir {
 			   DirectoryEntry.MAXNAMESIZE,
 			   b);
         }
-	DaisyLock.unlock_file(d.file.inodenum);
+	DaisyLock.unlock_file(d.file.getInodenum());
         return Daisy.DAISY_ERR_OK;
     }
 
@@ -204,7 +204,7 @@ public class DaisyDir {
         d.entries[new_entry].inodenum = inodenum;
         d.entries[new_entry].filename = filename;
 
-        fh.inodenum = inodenum;
+        fh.setInodenum(inodenum);
 
 	if (new_entry == d.size) {
 	    d.size++;        
@@ -255,7 +255,7 @@ public class DaisyDir {
         for (int i = 0; i < d.size; i++) {
             if (d.entries[i].inodenum != -1 && 
 		names_equal(filename, d.entries[i].filename)) {
-                fh.inodenum = d.entries[i].inodenum;
+                fh.setInodenum(d.entries[i].inodenum);
                 return DaisyDir.closeDirectory(d);
             }
         }
@@ -287,21 +287,21 @@ public class DaisyDir {
 			    int offset, 
 			    int size, 
 			    byte b[]) {
-        return Daisy.write(file.inodenum, offset, size, b);
+        return Daisy.write(file.getInodenum(), offset, size, b);
     }
 
     static public int read(FileHandle file, 
 			   int offset, 
 			   int size, 
 			   byte b[]) {
-        return Daisy.read(file.inodenum, offset, size, b);
+        return Daisy.read(file.getInodenum(), offset, size, b);
     }
 
     static public int get_attr(FileHandle file, Attribute a) {
-        return Daisy.get_attr(file.inodenum, a);
+        return Daisy.get_attr(file.getInodenum(), a);
     }
 
     static public int set_attr(FileHandle file, Attribute a) {
-        return Daisy.set_attr(file.inodenum, a);
+        return Daisy.set_attr(file.getInodenum(), a);
     }
 }

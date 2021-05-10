@@ -25,7 +25,7 @@ public class DaisyTest {
 		final int ITERATIONS = 1;
 		
 		FileHandle root = new FileHandle();
-		root.inodenum = 0;
+		root.setInodenum(0);
 		FileHandle cowFileHandle = new FileHandle();
 		Petal.init(false);
 

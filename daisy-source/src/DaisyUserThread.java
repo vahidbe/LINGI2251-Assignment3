@@ -71,7 +71,7 @@ public class DaisyUserThread extends Thread {
 			assert (lookupStatus == Daisy.DAISY_ERR_OK) || (lookupStatus == Daisy.DAISY_ERR_NOENT);
 			
 			System.out.printf("Doing op %d on file %d, inode %d, status=%d\n", 
-					operation, fileID, fh.inodenum, lookupStatus);
+					operation, fileID, fh.getInodenum(), lookupStatus);
 			switch(operation) {
 				case READ_OPERATION:
 					System.out.println("Reading...");
@@ -81,8 +81,8 @@ public class DaisyUserThread extends Thread {
 					status = DaisyDir.read(fh, offset, size, contents);
 					if(lookupStatus != Daisy.DAISY_ERR_OK) {
 						assert status == Daisy.DAISY_ERR_BADHANDLE;
-				    } else {
-					    assert status == Daisy.DAISY_ERR_OK;
+					} else {
+						assert status == Daisy.DAISY_ERR_OK;
 					}
 					break;
 					
@@ -144,7 +144,7 @@ public class DaisyUserThread extends Thread {
 				default:
 					assert false;
 					break;
-			}
+			}			
 		}
 	}
 }
