@@ -14,13 +14,19 @@ package daisy;
 //@ thread_local
 public class FileHandle {
     private long inodenum;
+    private boolean initialized;
 
     public synchronized void setInodenum(long inodenum) {
         this.inodenum = inodenum;
+        this.initialized = true;
     }
 
     public synchronized long getInodenum() {
         return this.inodenum;
+    }
+
+    public boolean isInitialized() {
+        return this.initialized;
     }
 
     public static boolean equal(FileHandle fd1, FileHandle fd2) {
