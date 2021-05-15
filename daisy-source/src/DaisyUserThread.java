@@ -78,7 +78,11 @@ public class DaisyUserThread extends Thread {
 					int size = 1;
 					contents = new byte[size];
 					offset = 0;
-					status = DaisyDir.read(fh, offset, size, contents);
+					if (fh.isInitialized()) {
+						status = DaisyDir.read(fh, offset, size, contents);
+					} else {
+						status = Daisy.DAISY_ERR_BADHANDLE;
+					}
 					if(lookupStatus != Daisy.DAISY_ERR_OK) {
 						assert status == Daisy.DAISY_ERR_BADHANDLE;
 					} else {
