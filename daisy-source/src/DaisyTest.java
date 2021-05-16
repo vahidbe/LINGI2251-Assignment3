@@ -35,6 +35,8 @@ public class DaisyTest {
 		}
 		byte[][] filenames = new byte[FILECOUNT][];
 		filenames[0] = stringToBytes("cow");
+		//filenames[1] = stringToBytes("dog"); //test d
+		//filenames[2] = stringToBytes("cat"); //test e
 		int status = 0;
 		for(int i = 0; i < filenames.length; i++) {
 			status = DaisyDir.creat(root, filenames[i], fileHandles[i]);
@@ -46,18 +48,18 @@ public class DaisyTest {
 		
 		System.out.println("Creating the DaisyUserThreads ...");
 		DaisyUserThread thread1 = new DaisyUserThread(DaisyUserThread.READ_OPERATION, ITERATIONS, filenames, root);
-		DaisyUserThread thread2 = new DaisyUserThread(DaisyUserThread.DELETE_OPERATION, ITERATIONS, filenames, root);
-                DaisyUserThread thread3 = new DaisyUserThread(DaisyUserThread.WRITE_OPERATION, ITERATIONS, filenames, root);
+		DaisyUserThread thread2 = new DaisyUserThread(DaisyUserThread.DELETE_OPERATION, ITERATIONS, filenames, root); //WRITE_OPERATION for test a, RANDOM_OPERATION for test b, 2 instead of ITERATIONS for test c
+                DaisyUserThread thread3 = new DaisyUserThread(DaisyUserThread.WRITE_OPERATION, ITERATIONS, filenames, root); // test f
 
 		System.out.println("Starting the DaisyUserThreads ...");
 		thread1.start();
 		thread2.start();
-		thread3.start();
+		//thread3.start(); //test f
 		
 			try {
 				thread1.join();
 				thread2.join();
-				thread3.join();
+				//thread3.join(); //test f
 			} catch(Exception e) {
 				System.err.println("Error joining DaisyUserThread.");
 			}
