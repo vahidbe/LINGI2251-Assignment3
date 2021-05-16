@@ -47,13 +47,17 @@ public class DaisyTest {
 		System.out.println("Creating the DaisyUserThreads ...");
 		DaisyUserThread thread1 = new DaisyUserThread(DaisyUserThread.READ_OPERATION, ITERATIONS, filenames, root);
 		DaisyUserThread thread2 = new DaisyUserThread(DaisyUserThread.DELETE_OPERATION, ITERATIONS, filenames, root);
+                DaisyUserThread thread3 = new DaisyUserThread(DaisyUserThread.WRITE_OPERATION, ITERATIONS, filenames, root);
+
 		System.out.println("Starting the DaisyUserThreads ...");
 		thread1.start();
 		thread2.start();
+		thread3.start();
 		
 			try {
 				thread1.join();
 				thread2.join();
+				thread3.join();
 			} catch(Exception e) {
 				System.err.println("Error joining DaisyUserThread.");
 			}
